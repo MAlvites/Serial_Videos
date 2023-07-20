@@ -10,18 +10,21 @@ from pathlib import Path
 from time import sleep
 
 #Variables
-playing = "50"
+playing = "00"
 audio_count=0
 v_w_audio=["40"]
 v_positions = {
-    "0": (0,5),
-    "1": (0,5),
-    "2": (0,5),
-    "3": (0,5),
-    "4": (0,5),
-    "5": (0,5),
-    "6": (10,15),
-    "8": (20,25),
+    "2": (0,7),  #Hola mi nombre es qhali
+    "6": (10,15),  #Venimos hasta aqui
+    "4": (20,28),  #Estare aqui acompanandote
+    "5": (30,32),  #Hoy el se encargara de la sesion
+    "8": (35,40),  #El es un especialista del hospital
+    "a": (45,51),  #Claro que si Solo eran mis
+    "1": (55,63),  #Fue un gusto poder acompañarte
+    "3": (65,69),  #Cara feliz
+    "0": (65,69),  #Cara feliz
+    "7": (65,69),  #Cara estrella
+    "b": (85,88),  #Cara ojos estrella
 }
 
 #Last audio played
@@ -30,8 +33,8 @@ last=datetime.strptime(file_save.read(), '%Y/%m/%d %H:%M:%S.%f')
 file_save.close()
 
 #Videos
-video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Pru.mp4")
-video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Presentacion_bottom.mp4")
+video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_Top.mp4")
+video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_Bottom.mp4")
 player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=local'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 player2 = OMXPlayer(video_2_path, args = ['--display=2','--orientation=180','--loop'], dbus_name='org.mpris.MediaPlayer2.omxplayer2')
 
@@ -78,7 +81,7 @@ def video_handler(command):
                 last=datetime.now()
                 save_time()
                 #Change to no Audio
-                command="50"
+                command="00"
                 audio_count=0
 
         if (command[0] in v_positions.keys()) and command[1] == "0":
@@ -90,11 +93,7 @@ def video_handler(command):
             player2.set_position(v_positions[command[0]][0])
             playing = command
             
-        if (command[1] in v_positions.keys()) and command[0] == "0":
-            player1.set_position(v_positions[command[1]][0])
-            player2.set_position(v_positions[command[1]][0])
-            playing = command
-
+       
 #def main(e,):
 JBL_init()
 
@@ -122,8 +121,5 @@ while True:
     #Video Loop
     position = player1.position()
     print(position)
-    if (playing[1]=="0" and position>= v_positions[playing[0]][1]):
-        video_handler(playing)
-        
-    if (playing[0]=="0" and position>= v_positions[playing[1]][1]):
+    if (position>= v_positions[playing[0]][1]):
         video_handler(playing)
