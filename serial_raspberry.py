@@ -12,7 +12,7 @@ from time import sleep
 #Variables
 playing = "00"
 audio_count=0
-v_w_audio=["40"]
+v_w_audio=["2", "6", "4", "5", "8", "a", "1"]
 v_positions = {
     "2": (0,7),  #Hola mi nombre es qhali
     "6": (10,15),  #Venimos hasta aqui
@@ -59,7 +59,6 @@ def check_time():
         mixer.init()
         mixer.music.load("/home/pi/Downloads/Serial_Videos/Audios/AudioSordo.mp3")
         mixer.music.play()
-        print("here")
         save_time()
 #Save current time
 def save_time():
@@ -73,19 +72,19 @@ def save_time():
 def video_handler(command):
     global playing, player1, player2, audio_count, last
     if len(command) == 2 :
-        if(command in v_w_audio):
+        if(command[0] in v_w_audio):
             if (audio_count==0):
                 audio_count=audio_count+1
             else:
                 #Last audio played
                 last=datetime.now()
                 save_time()
+                print("here")
                 #Change to no Audio
-                command="00"
+                playing="00"
                 audio_count=0
 
         if (command[0] in v_positions.keys()) and command[1] == "0":
-            print("here")
             #player1.pause()
             #player2.pause()
             player1.set_position(v_positions[command[0]][0])
@@ -110,8 +109,7 @@ print("Interfaz de pantallas")
 
 while True:
    #JBL audio
-    check_time()
-    print(last)    
+    check_time()   
     #UART
     if serial_port.inWaiting() > 0:
         data = serial_port.read(2)
@@ -121,5 +119,5 @@ while True:
     #Video Loop
     position = player1.position()
     print(position)
-    if (position>= v_positions[playing[0]][1]):
+    if (position> v_positions[playing[0]][1] or position< v_positions[playing[0]][0]):
         video_handler(playing)
