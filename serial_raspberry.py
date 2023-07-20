@@ -14,13 +14,14 @@ playing = "50"
 audio_count=0
 v_w_audio=["40"]
 v_positions = {
-    "5": (0,5),
-    "3": (0,5),
-    "8": (0,5),
-    "7": (0,5),
+    "0": (0,5),
     "1": (0,5),
-    "4": (10,15),
-    "2": (20,25),
+    "2": (0,5),
+    "3": (0,5),
+    "4": (0,5),
+    "5": (0,5),
+    "6": (10,15),
+    "8": (20,25),
 }
 
 #Last audio played
@@ -29,7 +30,7 @@ last=datetime.strptime(file_save.read(), '%Y/%m/%d %H:%M:%S.%f')
 file_save.close()
 
 #Videos
-video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Presentacion.mp4")
+video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Pru.mp4")
 video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Presentacion_bottom.mp4")
 player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=local'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 player2 = OMXPlayer(video_2_path, args = ['--display=2','--orientation=180','--loop'], dbus_name='org.mpris.MediaPlayer2.omxplayer2')
