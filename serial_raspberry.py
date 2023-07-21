@@ -10,9 +10,9 @@ from pathlib import Path
 from time import sleep
 
 #Variables
-play_="00"
+next="00"
 playing = "00"
-audio_count=0
+isAudioPlayed=False
 v_w_audio=["2", "6", "4", "5", "8", "a", "1"]
 v_positions = {
     "2": (0,7),  #Hola mi nombre es qhali
@@ -71,59 +71,48 @@ def save_time():
 
 #Control the displaying video
 def video_handler(command):
-    global playing, player1, player2, audio_count, last, play_
-    play_="00"
+    global playing, player1, player2, isAudioPlayed, last, next
+    next="00"
     if len(command) == 2 : 
-        if(command[0] in v_w_audio):
-            if (audio_count==0):
-                audio_count=audio_count+1
-            else:
-                #Last audio played
-                last=datetime.now()
-                save_time()
-                print("here")
-                #Change to no Audio
-                audio_count=0
-            
-                if command[1] == "2":
-                    if command[0] == "6":
-                        play_="42"
-                    elif command[0] == "4":
-                        play_="52" 
-                    elif command[0] == "5":
-                        play_="82"
-                    elif command[0] == "8":
-                        play_="00"
-                    elif command[0] == "a":
-                        play_="12"
-                    elif command[0]=="1":
-                        play_="22"
-                    elif command[0]=="2":
-                        play_="00"   
-                    else:
-                        play_="00"
-                if command[1] == "0":
-                    play_="00"
-                print(play_)
+        #Select next video
+        if isAudioPlayed == True :
+            if command[1] == "2":
+                if command[0] == "6":
+                    next="42"
+                elif command[0] == "4":
+                    next="52" 
+                elif command[0] == "5":
+                    next="82"
+                elif command[0] == "8":
+                    next="00"
+                elif command[0] == "a":
+                    next="12"
+                elif command[0]=="1":
+                    next="22"
+                elif command[0]=="2":
+                    next="00"   
+                else:
+                    next="00"
+            if command[1] == "0":
+                next="00"
+        else:
+            next=command  
+        print(next)
 
-        if (command[0] in v_positions.keys()) and audio_count==1 :
-            #player1.pause()
-            #player2.pause()
-            player1.set_position(v_positions[command[0]][0])
-            print(v_positions[command[0]][0])
-            player2.set_position(v_positions[command[0]][0])
-            playing = command
-        if audio_count==0 :
-            #player2.pause()
-            player1.set_position(v_positions[play_[0]][0])
-            print(v_positions[play_[0]][0])
-            player2.set_position(v_positions[play_[0]][0])
-            playing = play_
-            if play_[0] in v_w_audio:
-                audio_count=1
-            
-       
-#def main(e,):
+        player1.set_position(v_positions[next[0]][0])
+        print(v_positions[next[0]][0])
+        player2.set_position(v_positions[next[0]][0])
+        playing = next
+        if next[0] in v_w_audio:
+            isAudioPlayed=True
+        else:
+            isAudioPlayed=False
+        print(isAudioPlayed)
+
+        if(command[0] in v_w_audio):
+            last=datetime.now()
+            save_time()
+               
 JBL_init()
 
 serial_port = serial.Serial(
@@ -138,7 +127,7 @@ sleep(1)
 print("Interfaz de pantallas")
 
 while True:
-   #JBL audio
+    #JBL audio
     check_time()   
     #UART
     if serial_port.inWaiting() > 0:
@@ -149,6 +138,5 @@ while True:
     #Video Loop
     position = player1.position()
     print(position)
-    if (position> v_positions[playing[0]][1]+0.5 or position< v_positions[playing[0]][0]-0.5):
-        print(v_positions[playing[0]][1])
+    if (position> v_positions[playing[0]][1]+0.3 or position< v_positions[playing[0]][0]-0.3):
         video_handler(playing)
