@@ -10,6 +10,7 @@ from pathlib import Path
 from time import sleep
 
 #Variables
+play_="00"
 playing = "00"
 audio_count=0
 v_w_audio=["2", "6", "4", "5", "8", "a", "1"]
@@ -70,8 +71,9 @@ def save_time():
 
 #Control the displaying video
 def video_handler(command):
-    global playing, player1, player2, audio_count, last
-    if len(command) == 2 :
+    global playing, player1, player2, audio_count, last, play_
+    play_="00"
+    if len(command) == 2 : 
         if(command[0] in v_w_audio):
             if (audio_count==0):
                 audio_count=audio_count+1
@@ -81,16 +83,44 @@ def video_handler(command):
                 save_time()
                 print("here")
                 #Change to no Audio
-                command="00"
                 audio_count=0
+            
+                if command[1] == "2":
+                    if command[0] == "6":
+                        play_="42"
+                    elif command[0] == "4":
+                        play_="52" 
+                    elif command[0] == "5":
+                        play_="82"
+                    elif command[0] == "8":
+                        play_="00"
+                    elif command[0] == "a":
+                        play_="12"
+                    elif command[0]=="1":
+                        play_="22"
+                    elif command[0]=="2":
+                        play_="00"   
+                    else:
+                        play_="00"
+                if command[1] == "0":
+                    play_="00"
+                print(play_)
 
-        if (command[0] in v_positions.keys()) and command[1] == "0":
+        if (command[0] in v_positions.keys()) and audio_count==1 :
             #player1.pause()
             #player2.pause()
             player1.set_position(v_positions[command[0]][0])
             print(v_positions[command[0]][0])
             player2.set_position(v_positions[command[0]][0])
             playing = command
+        if audio_count==0 :
+            #player2.pause()
+            player1.set_position(v_positions[play_[0]][0])
+            print(v_positions[play_[0]][0])
+            player2.set_position(v_positions[play_[0]][0])
+            playing = play_
+            if play_[0] in v_w_audio:
+                audio_count=1
             
        
 #def main(e,):
