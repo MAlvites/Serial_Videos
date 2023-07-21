@@ -81,7 +81,7 @@ def video_handler(command):
                 save_time()
                 print("here")
                 #Change to no Audio
-                playing="00"
+                command="00"
                 audio_count=0
 
         if (command[0] in v_positions.keys()) and command[1] == "0":
@@ -119,5 +119,6 @@ while True:
     #Video Loop
     position = player1.position()
     print(position)
-    if (position> v_positions[playing[0]][1] or position< v_positions[playing[0]][0]):
+    if (position> v_positions[playing[0]][1]+0.5 or position< v_positions[playing[0]][0]-0.5):
+        print(v_positions[playing[0]][1])
         video_handler(playing)
