@@ -100,7 +100,6 @@ def video_handler(command):
         print(next)
 
         player1.set_position(v_positions[next[0]][0])
-        print(v_positions[next[0]][0])
         player2.set_position(v_positions[next[0]][0])
         playing = next
         if next[0] in v_w_audio:
