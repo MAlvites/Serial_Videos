@@ -11,13 +11,15 @@ from time import sleep
 
 #Variables
 next="30"
-playing = "20"
+playing = "30"
 isAudioPlayed=False
-v_w_audio=["1", "2"]
+v_w_audio=["1", "4", "2"]
 v_positions = {
+    "0": (0,5.5),  #No Audio
     "3": (0,5.5),  #No Audio
+    "2": (10,88),
     "1": (10,88),  #Hola mi nombre es qhali
-    "2": (90,150),  #Como sabemos, PERUMIN
+    "4": (90,150),  #Como sabemos, PERUMIN
 }
 
 #Last audio played
@@ -71,7 +73,7 @@ def video_handler(command):
             #Save time
             last=datetime.now()
             save_time()
-            if command[1] == "2" :
+            if command[1] == "2" or command[1] == "3":
                     next="30"
             if command[1] == "0":
                 next="30"
