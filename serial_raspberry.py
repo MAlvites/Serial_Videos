@@ -20,7 +20,7 @@ v_positions = {
     "4": (20,28),  #Estare aqui acompanandote
     "5": (30,32),  #Hoy el se encargara de la sesion
     "8": (35,40),  #El es un especialista del hospital
-    "a": (45,51),  #Claro que si Solo eran mis
+    "Z": (45,51),  #Claro que si Solo eran mis
     "1": (55,63),  #Fue un gusto poder acompañarte
     "3": (65,69),  #Cara feliz
     "0": (65,69),  #Cara feliz
