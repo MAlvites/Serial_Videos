@@ -11,11 +11,11 @@ from time import sleep
 
 #Variables
 next="30"
-playing = "30"
+playing = "20"
 isAudioPlayed=False
-v_w_audio=["1", "2", "3"]
+v_w_audio=["1", "2"]
 v_positions = {
-    "3": (0,5),  #No Audio
+    "3": (0,5.5),  #No Audio
     "1": (10,88),  #Hola mi nombre es qhali
     "2": (90,150),  #Como sabemos, PERUMIN
 }
@@ -68,10 +68,13 @@ def video_handler(command):
     if len(command) == 2 : 
         #Select next video
         if isAudioPlayed == True :
+            #Save time
+            last=datetime.now()
+            save_time()
             if command[1] == "2" :
                     next="30"
             if command[1] == "0":
-                next="00"
+                next="30"
         else:
             next=command  
         print(next)
@@ -84,10 +87,6 @@ def video_handler(command):
         else:
             isAudioPlayed=False
         print(isAudioPlayed)
-
-        if(command[0] in v_w_audio):
-            last=datetime.now()
-            save_time()
                
 JBL_init()
 
