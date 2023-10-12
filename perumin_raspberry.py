@@ -17,8 +17,8 @@ v_w_audio=["1", "4", "2"]
 v_positions = {
     "0": (0,5.5),  #No Audio
     "3": (0,5.5),  #No Audio
-    "2": (10,88),
-    "1": (10,88),  #Hola mi nombre es qhali
+    "2": (10,87.5),
+    "1": (10,87.5),  #Hola mi nombre es qhali
     "4": (90,150),  #Como sabemos, PERUMIN
 }
 
@@ -30,7 +30,7 @@ file_save.close()
 #Videos
 video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Perumin_Top/Perumin_Top.mp4")
 video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Perumin_Bottom/Perumin_Bottom.mp4")
-player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=local'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
+player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=alsa'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 player2 = OMXPlayer(video_2_path, args = ['--display=2','--orientation=180','--loop'], dbus_name='org.mpris.MediaPlayer2.omxplayer2')
 
 #Initiaze JBL
@@ -105,7 +105,7 @@ print("Interfaz de pantallas")
 
 while True:
     #JBL audio
-    check_time()   
+    #check_time()   
     #UART
     if serial_port.inWaiting() > 0:
         data = serial_port.read(2)
