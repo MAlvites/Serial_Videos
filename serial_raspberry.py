@@ -13,18 +13,18 @@ from time import sleep
 next="00"
 playing = "00"
 isAudioPlayed=False
-v_w_audio=["2", "6", "4", "5", "8", "a", "1"]
+v_w_audio=["2", "6", "4", "5", "8", "a", "1","7"]
 v_positions = {
     "2": (0,7),  #Hola mi nombre es qhali
     "6": (10,15),  #Venimos hasta aqui
     "4": (20,28),  #Estare aqui acompanandote
     "5": (30,32),  #Hoy el se encargara de la sesion
     "8": (35,40),  #El es un especialista del hospital
-    "Z": (45,51),  #Claro que si Solo eran mis
+    "7": (45,51),  #Claro que si Solo eran mis
     "1": (55,63),  #Fue un gusto poder acompañarte
     "3": (65,69),  #Cara feliz
     "0": (65,69),  #Cara feliz
-    "7": (65,69),  #Cara estrella
+    "Z": (65,69),  #Cara estrella
     "b": (85,88),  #Cara ojos estrella
 }
 
@@ -36,7 +36,7 @@ file_save.close()
 #Videos
 video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_Top.mp4")
 video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_Bottom.mp4")
-player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=local'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
+player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=alsa'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 player2 = OMXPlayer(video_2_path, args = ['--display=2','--orientation=180','--loop'], dbus_name='org.mpris.MediaPlayer2.omxplayer2')
 
 #Initiaze JBL
@@ -88,7 +88,7 @@ def video_handler(command):
                 elif command[0] == "a":
                     next="12"
                 elif command[0]=="1":
-                    next="22"
+                    next="02"
                 elif command[0]=="2":
                     next="00"   
                 else:
