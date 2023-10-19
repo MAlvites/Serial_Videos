@@ -1,0 +1,117 @@
+import time
+import RPi.GPIO as GPIO
+import serial
+import re
+import subprocess
+from pygame import mixer
+from datetime import *
+from omxplayer.player import OMXPlayer
+from pathlib import Path
+from time import sleep
+
+#Variables
+next="00"
+playing = "00"
+isAudioPlayed=False
+v_w_audio=["4", "5"]
+v_positions = {
+    "0": (0,5),  #Hola mi nombre es qhali
+    "5": (10,81),  #Venimos hasta aqui
+    "4": (90,137),  #Estare aqui acompanandote
+}
+
+
+#Last audio played
+file_save=open(r"/home/pi/Downloads/Serial_Videos/time.txt",'r')
+last=datetime.strptime(file_save.read(), '%Y/%m/%d %H:%M:%S.%f')
+file_save.close()
+
+#Videos
+video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/VRI_top/VRI_top.mp4")
+video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/VRI_bottom/VRI_bottom.mp4")
+player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=alsa'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
+player2 = OMXPlayer(video_2_path, args = ['--display=2','--orientation=180','--loop'], dbus_name='org.mpris.MediaPlayer2.omxplayer2')
+
+#Initiaze JBL
+def JBL_init():
+    global last
+    delta=timedelta(minutes=15)
+    if (datetime.now()-last>delta):
+        pin=40
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(pin, GPIO.HIGH)
+        sleep(5)
+        GPIO.output(pin, GPIO.LOW)
+        GPIO.cleanup()
+        save_time()
+
+def check_time():
+    global last
+    delta=timedelta(minutes=14)
+    if (datetime.now()-last>delta):     
+        mixer.init()
+        mixer.music.load("/home/pi/Downloads/Serial_Videos/Audios/AudioSordo.mp3")
+        mixer.music.play()
+        save_time()
+#Save current time
+def save_time():
+    global last   
+    file_save=open(r"/home/pi/Downloads/Serial_Videos/time.txt",'w+')
+    last = datetime.now()
+    file_save.write(last.strftime("%Y/%m/%d %H:%M:%S.%f"))
+    file_save.close()
+
+#Control the displaying video
+def video_handler(command):
+    global playing, player1, player2, isAudioPlayed, last, next
+    next="00"
+    if len(command) == 2 : 
+        #Select next video
+        if isAudioPlayed == True :
+            if command[1] == "0":
+                next="00"
+        else:
+            next=command  
+        print(next)
+
+        player1.set_position(v_positions[next[0]][0])
+        player2.set_position(v_positions[next[0]][0])
+        playing = next
+        if next[0] in v_w_audio:
+            isAudioPlayed=True
+        else:
+            isAudioPlayed=False
+        print(isAudioPlayed)
+
+        if(command[0] in v_w_audio):
+            last=datetime.now()
+            save_time()
+               
+JBL_init()
+
+serial_port = serial.Serial(
+port="/dev/ttyS0",
+baudrate=115200,
+bytesize=serial.EIGHTBITS,
+parity=serial.PARITY_NONE,
+stopbits=serial.STOPBITS_ONE,
+timeout=0,)
+
+sleep(1)
+print("Interfaz de pantallas")
+
+while True:
+    #JBL audio
+    check_time()   
+    #UART
+    if serial_port.inWaiting() > 0:
+        data = serial_port.read(2)
+        data=data.decode() 
+        print(data)
+        video_handler(data)
+    #Video Loop
+    position = player1.position()
+    print(position)
+    if (position> v_positions[playing[0]][1]+0.3 or position< v_positions[playing[0]][0]-0.3):
+        video_handler(playing)
