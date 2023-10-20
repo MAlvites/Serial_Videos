@@ -13,11 +13,11 @@ from time import sleep
 next="00"
 playing = "00"
 isAudioPlayed=False
-v_w_audio=["4", "5"]
+v_w_audio=["2", "7"]
 v_positions = {
     "0": (0,5),  #Hola mi nombre es qhali
-    "5": (10,81),  #Venimos hasta aqui
-    "4": (90,137),  #Estare aqui acompanandote
+    "2": (10,81),  #Venimos hasta aqui
+    "7": (90,137),  #Estare aqui acompanandote
 }
 
 
@@ -53,6 +53,7 @@ def check_time():
         mixer.init()
         mixer.music.load("/home/pi/Downloads/Serial_Videos/Audios/AudioSordo.mp3")
         mixer.music.play()
+        print("AudioSordo reproducido")
         save_time()
 #Save current time
 def save_time():
