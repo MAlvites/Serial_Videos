@@ -34,7 +34,7 @@ last=datetime.strptime(file_save.read(), '%Y/%m/%d %H:%M:%S.%f')
 file_save.close()
 
 #Videos
-video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_Top.mp4")
+video_1_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_hospital_top/Prueba_hospital_top.mp4")
 video_2_path = Path("/home/pi/Downloads/Serial_Videos/Videos/Prueba_Bottom.mp4")
 player1 = OMXPlayer(video_1_path, args = ['--display=7','--orientation=180','--loop','--adev=alsa'],dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 player2 = OMXPlayer(video_2_path, args = ['--display=2','--orientation=180','--loop'], dbus_name='org.mpris.MediaPlayer2.omxplayer2')
